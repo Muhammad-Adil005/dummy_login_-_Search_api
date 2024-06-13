@@ -5,3 +5,5 @@ class PerformSearch extends HomeEvent {
 
   PerformSearch(this.query);
 }
+
+// class FetchPosts extends HomeEvent {}
