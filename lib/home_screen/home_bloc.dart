@@ -1,5 +1,5 @@
-// home_bloc.dart
 import 'package:bloc/bloc.dart';
+import 'package:login_api_app/db/db.dart';
 import 'package:login_api_app/home_screen/home.dart';
 
 import '../api_services/login_api.dart';
@@ -15,6 +15,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void registerEvents() {
     on<PerformSearch>(_onPerformSearch);
+    on<Logout>(_onLogout);
     //on<FetchPosts>(_onFetchPosts);
   }
 
@@ -32,6 +33,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       emit(state.copyWith(loading: false, errorMessage: e.toString()));
     }
+  }
+
+  Future<void> _onLogout(Logout event, Emitter<HomeState> emit) async {
+    await UserDao.get().deleteUser();
+    emit(state.copyWith(loggedOut: true));
   }
 
   // Future<void> _onFetchPosts(FetchPosts event, Emitter<HomeState> emit) async {

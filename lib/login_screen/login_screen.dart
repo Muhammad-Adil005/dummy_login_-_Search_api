@@ -19,8 +19,9 @@ class LoginScreen extends StatelessWidget {
             if (state.success) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                    duration: Duration(seconds: 1),
-                    content: Text('Login Successfully')),
+                  duration: Duration(seconds: 1),
+                  content: Text('Login Successfully'),
+                ),
               );
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const HomeScreen()));

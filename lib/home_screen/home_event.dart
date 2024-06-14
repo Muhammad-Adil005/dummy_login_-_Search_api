@@ -6,4 +6,6 @@ class PerformSearch extends HomeEvent {
   PerformSearch(this.query);
 }
 
+class Logout extends HomeEvent {}
+
 // class FetchPosts extends HomeEvent {}

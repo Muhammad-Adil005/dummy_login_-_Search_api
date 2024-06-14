@@ -4,12 +4,27 @@ import 'package:login_api_app/home_screen/home_bloc.dart';
 import 'package:login_api_app/login_screen/login_bloc.dart';
 import 'package:login_api_app/login_screen/login_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'db/user/dao.dart';
+import 'db/user/table.dart';
+import 'home_screen/home_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  bool isLoggedIn = await checkLoginStatus();
+
+  //runApp(const MyApp());
+  runApp(MyApp(isLoggedIn: isLoggedIn));
+}
+
+Future<bool> checkLoginStatus() async {
+  UserTable? user = await UserDao.get().getLoggedUser();
+  return user != null;
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final bool isLoggedIn;
+  const MyApp({super.key, required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +42,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        home: const LoginScreen(),
+        // home: LoginScreen(),
+        home: isLoggedIn ? const HomeScreen() : const LoginScreen(),
       ),
     );
   }

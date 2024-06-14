@@ -4,12 +4,14 @@ import 'model/post_model.dart';
 
 class HomeState extends Equatable {
   final bool loading;
+  final bool loggedOut;
   final List<Post> posts;
   //final bool success;
   final String? errorMessage;
 
   const HomeState({
     this.loading = false,
+    this.loggedOut = false,
     this.posts = const [],
     //this.success = false,
     this.errorMessage,
@@ -17,12 +19,14 @@ class HomeState extends Equatable {
 
   HomeState copyWith({
     bool? loading,
+    bool? loggedOut,
     List<Post>? posts,
     //bool? success,
     String? errorMessage,
   }) {
     return HomeState(
       loading: loading ?? this.loading,
+      loggedOut: loggedOut ?? this.loggedOut,
       posts: posts ?? this.posts,
       errorMessage: errorMessage ?? this.errorMessage,
       //success: success ?? this.success,
@@ -31,6 +35,7 @@ class HomeState extends Equatable {
 
   List<Object?> get props => [
         loading,
+        loggedOut,
         posts,
         errorMessage,
         //success,

@@ -3,6 +3,8 @@ import 'package:login_api_app/login_screen/login.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../api_services/login_api.dart';
+import '../db/user/dao.dart';
+import '../db/user/table.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(const LoginState()) {
@@ -32,6 +34,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       //if (response != null) {
       if (response != null && response['id'] != null) {
+        // Store user data in the local database
+        UserTable user = UserTable.create(
+          userId: response['id'],
+          username: response['username'],
+          password: response['password'],
+        );
+
+        await UserDao.get().addUser(user);
+
         loginForm.reset();
         emit(state.copyWith(loading: false, success: true));
       } else {
