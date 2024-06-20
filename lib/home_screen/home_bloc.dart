@@ -3,7 +3,7 @@ import 'package:login_api_app/db/db.dart';
 import 'package:login_api_app/home_screen/home.dart';
 
 import '../api_services/login_api.dart';
-import 'model/post_model.dart';
+import '../model/home_screen_model.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(const HomeState()) {

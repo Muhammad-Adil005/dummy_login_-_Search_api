@@ -4,139 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:login_api_app/fake_store_product/fake-store_product_screen.dart';
 import 'package:login_api_app/home_screen/home.dart';
 import 'package:path/path.dart';
 
+import '../falaya/falaya_screen.dart';
 import '../login_screen/login_screen.dart';
-
-/*class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    TextEditingController searchController = TextEditingController();
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('HomeScreen'),
-      ),
-      body: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          if (state.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
-            return Center(
-              child: Text(state.errorMessage!),
-            );
-          }
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: searchController,
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.all(12),
-                          hintText: 'Search Here...',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSubmitted: (value) {
-                          if (value.isNotEmpty) {
-                            BlocProvider.of<HomeBloc>(context)
-                                .add(PerformSearch(value));
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      // onTap: () {
-                      //   BlocProvider.of<HomeBloc>(context)
-                      //       .add(PerformSearch('qui'));
-                      // },
-                      onTap: () {
-                        final query = searchController.text;
-                        if (query.isNotEmpty) {
-                          BlocProvider.of<HomeBloc>(context)
-                              .add(PerformSearch(query));
-                          searchController.clear();
-                        }
-                      },
-                      child: Container(
-                        height: 50,
-                        width: 70,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.blueAccent,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Search',
-                            style: GoogleFonts.roboto(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                  ],
-                ),
-                if (state.posts.isEmpty)
-                  const Expanded(
-                    child: Center(
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        'No Result Found',
-                      ),
-                    ),
-                  )
-                else
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: state.posts.length,
-                      itemBuilder: (context, index) {
-                        final post = state.posts[index];
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  post.title,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(post.body),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-}*/
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -208,47 +81,55 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Future<void> _logout(BuildContext context) async {
-  //   await UserDao.get().deleteUser();
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     const SnackBar(
-  //       content: Text('Logged out successfully'),
-  //     ),
-  //   );
-  //   Navigator.pushReplacement(
-  //       context, MaterialPageRoute(builder: (context) => const LoginScreen()));
-  // }
-
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeBloc, HomeState>(
-      listener: (context, state) {
+    return BlocProvider(
+      create: (context) => HomeBloc(),
+      child: BlocConsumer<HomeBloc, HomeState>(listener: (context, state) {
         if (state.loggedOut) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
+              duration: Duration(seconds: 1),
               content: Text('Logged out successfully'),
             ),
           );
-          Navigator.pushReplacement(
-            context,
+          Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const LoginScreen()),
           );
         }
-      },
-      builder: (context, state) {
+      }, builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: const Text('HomeScreen'),
+            title: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FalayaScreen(),
+                  ),
+                );
+              },
+              child: const Text('HomeScreen'),
+            ),
             actions: [
               IconButton(
-                //onPressed: () => _logout(context),
                 onPressed: () {
                   BlocProvider.of<HomeBloc>(context).add(Logout());
                 },
                 icon: const Icon(Icons.logout),
               ),
             ],
+            leading: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FakeStoreProductScreen(),
+                    ),
+                  );
+                },
+                child: const Icon(Icons.near_me)),
           ),
           body: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
@@ -318,79 +199,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(width: 10),
                       ],
                     ),
-                    /*if (_imageFile != null) ...[
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    height: 200,
-                    child: Image.file(
-                      _imageFile!,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Save'),
-                  ),
-                ] else ...[
-                  GestureDetector(
-                    onTap: _captureImageFromCamera,
-                    child: Container(
-                      height: 50,
-                      width: 70,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.blueAccent,
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.camera_alt,
-                          color: Colors.white,
-                          size: 40,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                ],
-                if (state.posts.isEmpty)
-                  const Expanded(
-                    child: Center(
-                      child: Text(
-                        'No Result Found',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
-                else
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: state.posts.length,
-                      itemBuilder: (context, index) {
-                        final post = state.posts[index];
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  post.title,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(post.body),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),*/
                     const SizedBox(height: 10),
                     Expanded(
                       child: state.posts.isEmpty
@@ -480,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         );
-      },
+      }),
     );
   }
 }

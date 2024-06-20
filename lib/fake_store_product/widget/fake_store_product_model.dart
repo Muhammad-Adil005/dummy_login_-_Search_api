@@ -24,7 +24,10 @@ class FakeStoreProductModel {
     return FakeStoreProductModel(
       id: json['id'],
       title: json['title'],
-      price: json['price'],
+      //price: json['price'],
+      price: json['price'] is int
+          ? (json['price'] as int).toDouble()
+          : json['price'],
       description: json['description'],
       category: json['category'],
       image: json['image'],
@@ -55,7 +58,9 @@ class Rating {
 
   factory Rating.fromJson(Map<String, dynamic> json) {
     return Rating(
-      rate: json['rate'],
+      //rate: json['rate'],
+      rate:
+          json['rate'] is int ? (json['rate'] as int).toDouble() : json['rate'],
       count: json['count'],
     );
   }
