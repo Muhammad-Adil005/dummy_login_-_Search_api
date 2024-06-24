@@ -1,16 +1,22 @@
-# login_api_app
+# The packges I used inside this project is
+## dio
+## bloc
+## flutter_bloc
+## equatable
+## sqflite
+## sqflite_common_ffi
+## shared_preferences
+## reactive_forms
+## google_fonts
+## image_picker
 
-A new Flutter project.
+# Also Inside this project I integrates these Api's
 
-## Getting Started
+## FakeStoreProduct API
+## Login API
+## Falaya API
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+# Also I learn about and implement the local db inside this project
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Create a Models for all these Api's
