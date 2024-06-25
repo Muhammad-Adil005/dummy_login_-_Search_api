@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_api_app/falaya/falaya.dart';
+import 'package:login_api_app/falaya/shimmer/shimmer.dart';
 
 import '../model/falaya_model.dart';
 
@@ -31,7 +32,8 @@ class FalayaScreen extends StatelessWidget {
           builder: (context, state) {
             if (state.loading) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: ShimmerLoadingList(),
+                //child: CircularProgressIndicator(),
               );
             } else if (state.errorMessage != null) {
               return Center(child: Text('Error: ${state.errorMessage}'));
@@ -123,9 +125,9 @@ class FalayaScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
+                              SizedBox(
                                 height: 200,
-                                color: Colors.grey[300],
+                                // color: Colors.grey[300],
                                 child: Center(
                                   child: falaya.listingImages.isNotEmpty
                                       ? Image.network(
@@ -143,7 +145,7 @@ class FalayaScreen extends StatelessWidget {
                                         )
                                       : const Text(
                                           'Image Placeholder',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(color: Colors.black),
                                         ),
                                 ),
                               ),

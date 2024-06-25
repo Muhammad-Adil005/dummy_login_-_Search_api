@@ -5,6 +5,7 @@ class FakeStoreProductModel {
   final int id;
   final String title;
   final double price;
+  //final dynamic price; // Same as below checks
   final String description;
   final String category;
   final String image;
